@@ -1,0 +1,17 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>documentation - 分类 - kevinzhang&#39;blog</title>
+        <link>http://example.org/categories/documentation/</link>
+        <description>documentation - 分类 - kevinzhang&#39;blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>kevinzhangcode@126.com (youguan)</managingEditor>
+            <webMaster>kevinzhangcode@126.com (youguan)</webMaster><lastBuildDate>Mon, 28 Feb 2022 14:08:45 &#43;0800</lastBuildDate><atom:link href="http://example.org/categories/documentation/" rel="self" type="application/rss+xml" /><item>
+    <title>NumpyGuidebook</title>
+    <link>http://example.org/numpyguidebook/</link>
+    <pubDate>Mon, 28 Feb 2022 14:08:45 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>http://example.org/numpyguidebook/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="https://blog.kakaocdn.net/dn/0dkkT/btqCvxHjYPc/IW10PdShJor5AuFZJz0WLk/img.jpg" referrerpolicy="no-referrer">
+            </div><p>本教程希望为入门数据科学、DeepLearning的同学提供Numpy的基本操作指南。</p>]]></description>
+</item></channel>
+</rss>
