@@ -53,9 +53,7 @@ $$ 在公式 \eqref{eq:sample} 中，我们看到了这个被自动编号的公�
 ```
 - 显示：
 
-$$ 在公式 \eqref{eq:sample} 中，我们看到了这个被自动编号的公式。$$
-
-$$ \begin{equation} E=mc^2 \text{，自动编号公式示例} \label{eq:sample} \end{equation} $$
+$$ 在公式 \eqref{eq:sample} 中，我们看到了这个被自动编号的公式。\begin{equation} E=mc^2 \text{，自动编号公式示例} \label{eq:sample} \end{equation} $$
 
 ### 2．如何输入上下标
 
@@ -73,7 +71,9 @@ $$ x^{y^z}=(1+{\rm e}^x)^{-2xy^w} $$
 ```
 $$ \sideset{^1_2}{^3_4}\bigotimes \quad or \quad {^1_2}\bigotimes {^3_4} $$
 ```
-- 显示：$$\sideset{^1_2}{^3_4}\bigotimes \quad or \quad {^1_2}\bigotimes {^3_4} $$
+- 显示：
+
+$$\sideset{^1_2}{^3_4}\bigotimes \quad or \quad {^1_2}\bigotimes {^3_4} $$
 
 ### 3．如何输入括号和分隔符
 
