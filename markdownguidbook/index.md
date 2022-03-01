@@ -6,13 +6,6 @@
 
 <!--more-->
 
-
-
-# Cmd Markdown 公式指导手册
-
-
-
-
 ## 一、公式使用参考
 
 ### 1．如何插入公式
@@ -20,20 +13,24 @@
 $\LaTeX$ 的数学公式有两种：行中公式和独立公式。行中公式放在文中与其它文字混编，独立公式单独成行。
 
 行中公式可以用如下方法表示：
-
-:        $ 数学公式 $
-
+```
+$ 数学公式 $
+```
 独立公式可以用如下方法表示：
 
-:        $$ 数学公式 $$
+```
+$$ 数学公式 $$
+```
 
 自动编号的公式可以用如下方法表示：
-:    若需要手动编号，参见“[大括号和行标的使用](#14大括号和行标的使用)”。
+若需要手动编号，参见“[大括号和行标的使用](#14大括号和行标的使用)”。
 
-:       \begin{equation}
+```
+\begin{equation}
     数学公式
     \label{eq:当前公式名}
 \end{equation}
+```
 
 **自动编号后的公式可在全文任意处使用 `\eqref{eq:公式名}` 语句引用。**
 
@@ -60,12 +57,9 @@ $$ 在公式 \eqref{eq:sample} 中，我们看到了这个被自动编号的公�
 ```
 - 显示：
 
-$$ 在公式 \eqref{eq:sample} 中，我们看到了这个被自动编号的公式。$$
-
-\begin{equation}
-    E=mc^2 \text{，自动编号公式示例}
-    \label{eq:sample}
-\end{equation}
+$$
+在公式 \eqref{eq:sample} 中，我们看到了这个被自动编号的公式。\begin{equation} E=mc^2 \text{，自动编号公式示例} \label{eq:sample}\end{equation}
+$$
 
 ### 2．如何输入上下标
 
@@ -278,7 +272,7 @@ MathJax 针对任意元素均提供从小至大 `\tiny` `\Tiny` `\scriptsize` `\
 |\sin|$\sin$|\cos|$\cos$|\tan|$\tan$|
 |\csc|$\csc$|\sec|$\sec$|\cot|$\cot$|
 
-### (5)．微积分运算符
+#### (5)．微积分运算符
 
 |输入|显示|输入|显示|输入|显示|
 |:--:|:--:|:--:|:--:|:--:|:--:|
@@ -395,11 +389,11 @@ $$ \rm{2OH^{\bullet}_{O(STN)}+2O^{\times}_{O(YSZ)} \; \overset{Surface/bulk}{\un
 \end{array}
 ```
 - 显示：
-\begin{array}{cc}
+$$\begin{array}{cc}
     \mathrm{Bad} & \mathrm{Better} \\
     \hline \\
     \int_0^1 x^2 dx & \int_0^1 x^2 \,{\rm d}x
-\end{array}
+\end{array}$$
 
 注意比较两个式子间 $dx$ 与 ${\rm d} x$ 的不同。
 使用 `\operatorname` 命令也可以达到相同的效果，详见“[定义新的运算符](#1定义新的运算符-operatorname)”。
@@ -568,12 +562,14 @@ $$
 \end{array}
 ```
 - 显示： 
-\begin{array}{c|c}
+  $$
+  \begin{array}{c|c}
     \text{Normal Operator} & \text{Operator with label above and below} \\
     \scriptsize\text{\operatorname{arsinh}{x}} & \scriptsize\text{\operatorname*{Res}_{z=1}{\frac{1}{z^2-z}=1}} \\[2ex]
     \hline \\
     \operatorname{arsinh}{x} & \operatorname*{Res}_{z=1}{\frac{1}{z^2-z}=1}
-\end{array}
+  \end{array}
+  $$
 
 查询[关于此命令的定义](http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference/15077#15077)和[关于此命令的讨论](http://meta.math.stackexchange.com/search?q=operatorname)来进一步了解此命令。
 
@@ -604,11 +600,14 @@ $$ f(n)= \begin{cases} n/2, & \text {if $n$ is even} \\ 3n+1, & \text{if $n$ is 
 \end{array}
 ```
 - 显示：
-\begin{array}{c|c}
+  $$
+  \begin{array}{c|c}
     \text{Spaces} & \text{Negative Space in Units} \\
     \hline \\
     \overbrace{a \! b}^{\text{\!}} \mid \underbrace{ab}_{\rm{default}} \mid \overbrace{a \, b}^{\text{\,}} \mid \underbrace{a \; b}_{\text{\;}} \mid \overbrace{a \quad b}^{\text{\quad}} \mid \underbrace{a \qquad b}_{\text{\qquad}} & \mathrm{N}\!\cdot\!\mathrm{m} \mid \mathrm{s}\!\cdot\!\mathrm{A} \mid \mathrm{kg}\!\cdot\!\mathrm{m}^2 \\ 
-\end{array}
+  \end{array}
+  $$
+  
 
 一些常见的公式单位可表达如下：
 
@@ -656,7 +655,8 @@ $$ \mu_0=4\pi\times10^{-7} \ \left.\mathrm{\mathrm{T}\!\cdot\!\mathrm{m}}\middle
 \hline\end{array}
 ```
 - 显示：
-\begin{array}{|rrrrrrrr|}\hline
+  $$
+  \begin{array}{|rrrrrrrr|}\hline
     \verb+#000+ & \color{#000}{text} & & &
     \verb+#00F+ & \color{#00F}{text} & & \\
     & & \verb+#0F0+ & \color{#0F0}{text} &
@@ -665,8 +665,9 @@ $$ \mu_0=4\pi\times10^{-7} \ \left.\mathrm{\mathrm{T}\!\cdot\!\mathrm{m}}\middle
     \verb+#F0F+ & \color{#F0F}{text} & & \\
     & & \verb+#FF0+ & \color{#FF0}{text} &
     & & \verb+#FFF+ & \color{#FFF}{text} \\
-\hline\end{array}
-
+  \hline\end{array}
+  $$
+  
 - 例子：
 ```
 \begin{array}{|rrrrrrrr|}\hline
@@ -687,22 +688,24 @@ $$ \mu_0=4\pi\times10^{-7} \ \left.\mathrm{\mathrm{T}\!\cdot\!\mathrm{m}}\middle
 \hline\end{array}
 ```
 - 显示：
-\begin{array}{|rrrrrrrr|}\hline
+  $$
+  \begin{array}{|rrrrrrrr|}\hline
     \verb+#000+ & \color{#000}{text} & \verb+#005+ & \color{#005}{text} & \verb+#00A+ & \color{#00A}{text} & \verb+#00F+ & \color{#00F}{text}  \\
     \verb+#500+ & \color{#500}{text} & \verb+#505+ & \color{#505}{text} & \verb+#50A+ & \color{#50A}{text} & \verb+#50F+ & \color{#50F}{text}  \\
     \verb+#A00+ & \color{#A00}{text} & \verb+#A05+ & \color{#A05}{text} & \verb+#A0A+ & \color{#A0A}{text} & \verb+#A0F+ & \color{#A0F}{text}  \\
     \verb+#F00+ & \color{#F00}{text} & \verb+#F05+ & \color{#F05}{text} & \verb+#F0A+ & \color{#F0A}{text} & \verb+#F0F+ & \color{#F0F}{text}  \\
-\hline
+  \hline
     \verb+#080+ & \color{#080}{text} & \verb+#085+ & \color{#085}{text} & \verb+#08A+ & \color{#08A}{text} & \verb+#08F+ & \color{#08F}{text}  \\
     \verb+#580+ & \color{#580}{text} & \verb+#585+ & \color{#585}{text} & \verb+#58A+ & \color{#58A}{text} & \verb+#58F+ & \color{#58F}{text}  \\
     \verb+#A80+ & \color{#A80}{text} & \verb+#A85+ & \color{#A85}{text} & \verb+#A8A+ & \color{#A8A}{text} & \verb+#A8F+ & \color{#A8F}{text}  \\
     \verb+#F80+ & \color{#F80}{text} & \verb+#F85+ & \color{#F85}{text} & \verb+#F8A+ & \color{#F8A}{text} & \verb+#F8F+ & \color{#F8F}{text}  \\
-\hline
+  \hline
     \verb+#0F0+ & \color{#0F0}{text} & \verb+#0F5+ & \color{#0F5}{text} & \verb+#0FA+ & \color{#0FA}{text} & \verb+#0FF+ & \color{#0FF}{text}  \\
     \verb+#5F0+ & \color{#5F0}{text} & \verb+#5F5+ & \color{#5F5}{text} & \verb+#5FA+ & \color{#5FA}{text} & \verb+#5FF+ & \color{#5FF}{text}  \\
     \verb+#AF0+ & \color{#AF0}{text} & \verb+#AF5+ & \color{#AF5}{text} & \verb+#AFA+ & \color{#AFA}{text} & \verb+#AFF+ & \color{#AFF}{text}  \\
     \verb+#FF0+ & \color{#FF0}{text} & \verb+#FF5+ & \color{#FF5}{text} & \verb+#FFA+ & \color{#FFA}{text} & \verb+#FFF+ & \color{#FFF}{text}  \\
-\hline\end{array}
+  \hline\end{array}
+  $$
 
 #### (5)．添加删除线
 
@@ -799,21 +802,7 @@ $$
 
 |分别使用 `circle` 和 `roundedbox` 包围的公式|使用 `box` 框住所有公式|
 |:--:|:--:|
-|$$
-\require{enclose}
-\begin{array}{c}
-    \enclose{circle}{f(\top),\, f^2(\top),\, f^3(\top) \,\cdots\, f^n(\top)} \\
-    \enclose{roundedbox}{f(\bot),\, f^2(\bot),\, f^3(\bot) \,\cdots\, f^n(\bot)} \\
-\end{array}
-$$|$$
-\require{enclose}
-\enclose{box}{
-    \begin{array}{c}
-        f(\top),\, f^2(\top),\, f^3(\top) \,\cdots\, f^n(\top) \\
-        f(\bot),\, f^2(\bot),\, f^3(\bot) \,\cdots\, f^n(\bot) \\
-    \end{array}
-}
-$$|
+|$$ \require{enclose} \begin{array}{c}\enclose{circle}{f(\top),\, f^2(\top),\, f^3(\top) \,\cdots\, f^n(\top)} \\ \enclose{roundedbox}{f(\bot),\, f^2(\bot),\, f^3(\bot) \,\cdots\, f^n(\bot)} \\ \end{array} $$|$$ \require{enclose} \enclose{box}{ \begin{array}{c} f(\top),\, f^2(\top),\, f^3(\top) \,\cdots\, f^n(\top) \\ f(\bot),\, f^2(\bot),\, f^3(\bot) \,\cdots\, f^n(\bot) \\ \end{array} } $$|
 
 此例语法可参见“[如何输入一个数组或表格](#五数组与表格使用参考)”。
 
@@ -842,7 +831,6 @@ $$
     1 & z & z^2 \\
 \end{matrix}
 $$
-
 ### 2．如何输入边框矩阵
 
 在开头将 `matrix` 替换为 `pmatrix` `bmatrix` `Bmatrix` `vmatrix` `Vmatrix` 。
@@ -885,7 +873,6 @@ $$
     1 & a_m & a_m^2 & \cdots & a_m^n \\
 \end{pmatrix}
 $$
-
 ### 4．如何输入带分割符号的矩阵
 
 详见"[数组使用参考](#五数组与表格使用参考)"。
@@ -910,7 +897,6 @@ $$
     \end{array}
 \right]
 $$
-
 其中 `cc|c` 代表在一个三列矩阵中的第二和第三列之间插入分割线。
 
 ### 5．如何输入行中矩阵
@@ -967,11 +953,14 @@ $$
 \end{align}
 ```
 - 显示：
-\begin{align}
+  $$
+  \begin{align}
     v + w & = 0  & \text{Given} \tag 1 \\
        -w & = -w + 0 & \text{additive identity} \tag 2 \\
    -w + 0 & = -w + (v + w) & \text{equations $(1)$ and $(2)$} \\
-\end{align}
+  \end{align}
+  $$
+  
 
 本例中第一、第二行的自动编号被 `\tag` 语句覆盖，第三行的编号为自动编号。
 
@@ -1002,7 +991,6 @@ $$
             3n+1, & \text{if $n$ is odd} \\
         \end{cases}
 $$
-
 > **@Sherlockk** 用 markdown+math 编辑时 `\text` 内需用 `\(equation\)`
 
 ### 2．如何输入一个左侧对齐的条件表达式
@@ -1031,7 +1019,6 @@ $$
     \right\}
     =f(n)
 $$
-
 ### 3．如何使条件表达式适配行高
 
 在一些情况下，条件表达式中某些行的行高为非标准高度，此时使用 `\\[2ex]` 语句代替该行末尾的 `\\` 来让编辑器适配。
@@ -1062,19 +1049,7 @@ $$
 - 显示：
 |不适配[2ex]|适配[2ex]|
 |:--:|:--:|
-|$$
-f(n) = 
-    \begin{cases}
-        \frac{n}{2}, & \text{if $n$ is even} \\
-        3n+1, & \text{if $n$ is odd} \\
-    \end{cases}
-$$|$$
-f(n) = 
-    \begin{cases}
-        \frac{n}{2}, & \text{if $n$ is even} \\[2ex]
-        3n+1, & \text{if $n$ is odd} \\
-    \end{cases}
-$$|
+|$$ f(n) = \begin{cases}\frac{n}{2}, & \text{if $n$ is even} \\ 3n+1, & \text{if $n$ is odd} \\ \end{cases} $$|$$ f(n) = \begin{cases} \frac{n}{2}, & \text{if $n$ is even} \\[2ex] 3n+1, & \text{if $n$ is odd} \\ \end{cases} $$|
 
 **一个 `[ex]` 指一个 "X-Height"，即 x 字母高度。可以根据情况指定多个 `[ex]`，如 `[3ex]`、`[4ex]` 等。**
 其实可以在任意换行处使用 `\\[2ex]` 语句，只要你觉得合适。
@@ -1099,13 +1074,16 @@ $$|
 \end{array}
 ```
 - 显示：
-\begin{array}{c|lcr}
+  $$
+  \begin{array}{c|lcr}
     n & \text{左对齐} & \text{居中对齐} & \text{右对齐} \\
     \hline
     1 & 0.24 & 1 & 125 \\
     2 & -1 & 189 & -8 \\
     3 & -20 & 2000 & 1+10i \\
-\end{array}
+  \end{array}
+  $$
+  
 
 ### 2．如何输入一个嵌套的数组或表格
 
@@ -1181,7 +1159,6 @@ $$
     \end{array} % 第二行表格结束
 \end{array} % 总表格结束
 $$
-
 ### 3．如何输入一个方程组
 
 可以使用 `\begin{array} … \end{array}` 和 `\left\{ … \right.` 来创建一个方程组：
@@ -1208,7 +1185,6 @@ $$
     \end{array}
 \right. 
 $$
-
 或使用条件表达式组 `\begin{cases} … \end{cases}` 来实现相同效果：
 
 - 例子：
@@ -1220,11 +1196,14 @@ $$
 \end{cases}
 ```
 - 显示：
-\begin{cases}
+  $$
+  \begin{cases}
     a_1x+b_1y+c_1z=d_1 \\ 
     a_2x+b_2y+c_2z=d_2 \\ 
     a_3x+b_3y+c_3z=d_3 \\
-\end{cases}
+  \end{cases}
+  $$
+  
 
 ## 六、连分数使用参考
 
@@ -1258,7 +1237,6 @@ x = a_0 + \cfrac{1^2}{a_1 +
             }
           }
 $$
-
 不要使用普通的 `\frac` 或 `\over` 来生成连分数，这样会看起来**很恶心**。
 
 - 反例：
@@ -1287,7 +1265,6 @@ x = a_0 + \frac{1^2}{a_1 +
             }
           }
 $$
-
 当然，你可以使用 `\frac` 来表达连分数的**紧缩记法**。
 
 - 例子：
@@ -1308,7 +1285,6 @@ x = a_0 + \frac{1^2}{a_1 +}
           \frac{4^4}{a_4 +}
           \cdots
 $$
-
 连分数通常都太大以至于不易排版，所以建议在连分数前后声明 `$$` 符号，或使用像 `[a0,a1,a2,a3,…]` 一样的紧缩记法。
 
 ## 七、交换图表使用参考
@@ -1340,7 +1316,6 @@ $$
     C @>>d> D \\
 \end{CD}
 $$
-
 其中，`@>>>` 代表右箭头、`@<<<` 代表左箭头、`@VVV` 代表下箭头、`@AAA` 代表上箭头、`@=` 代表水平双实线、`@|` 代表竖直双实线、`@.`代表没有箭头。
 在 `@>>>` 的 `>>>` 之间任意插入文字即代表该箭头的注释文字。
 
@@ -1364,7 +1339,6 @@ $$
     D @= E @<<< F \\
 \end{CD}
 $$
-
 在本例中，`very long label` 自动延长了它所在箭头以及对应箭头的长度，因而交换图表十分适合进行化学反应式的书写。
 
 - 例子：
@@ -1383,7 +1357,6 @@ $$
     \rm{RCOHR^{'}SO_3Na} @>{\large\text{Hydrolysis, $\Delta$, Dil.HCl}}>> \rm{(RCOR^{'})+NaCl+SO_2+ H_2O}
 \end{CD}
 $$
-
 ## 八、一些特殊的注意事项
 
 |**!! 本段内容为个人翻译，可能有不准确之处 !!**|
@@ -1407,12 +1380,15 @@ Don't use `\frac` in exponents or limits of integrals; it looks bad and can be c
 \end{array}
 ```
 - 显示：
-\begin{array}{cc}
+  $$
+  \begin{array}{cc}
     \mathrm{Bad} & \mathrm{Better} \\
     \hline \\
     \large e^{i\frac{\pi}2} \quad e^{\frac{i\pi}2}& \large e^{i\pi/2} \\[2ex]
     \int_{-\frac\pi2}^\frac\pi2 \sin x\,dx & \int_{-\pi/2}^{\pi/2}\sin x\,dx \\
-\end{array}
+  \end{array}
+  $$
+  
 
 The `|` symbol has the wrong spacing when it is used as a divider, for example in set comprehensions. Use `\mid` instead:
 
@@ -1428,11 +1404,14 @@ The `|` symbol has the wrong spacing when it is used as a divider, for example i
 ```
 
 - 显示：
-\begin{array}{cc}
+  $$
+  \begin{array}{cc}
     \mathrm{Bad} & \mathrm{Better} \\
     \hline \\
     \{x|x^2\in\Bbb Z\} & \{x\mid x^2\in\Bbb Z\} \\
-\end{array}
+  \end{array}
+  $$
+  
 
 For double and triple integrals, don't use `\int\int` or `\int\int\int`. Instead use the special forms `\iint` and `\iiint`:
 
@@ -1478,11 +1457,14 @@ Use `\,`, to insert a thin space before differentials; without this $\TeX$ will 
 ```
 
 - 显示：
-\begin{array}{cc}
+  $$
+  \begin{array}{cc}
     \mathrm{Bad} & \mathrm{Better} \\
     \hline \\
     \iiint_V f(x){\rm d}z {\rm d}y {\rm d}x & \iiint_{\boldsymbol{V}} f(x)\,{\rm d}z\,{\rm d}y\,{\rm d}x \\
-\end{array}
+  \end{array}
+  $$
+  
 
 ---
 
@@ -1492,3 +1474,5 @@ Use `\,`, to insert a thin space before differentials; without this $\TeX$ will 
 
 Drafted & Translated by [Eric P.](https://ericp.cn)
 2015-10-02
+
+
