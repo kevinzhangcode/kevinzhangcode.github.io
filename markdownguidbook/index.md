@@ -311,8 +311,9 @@ $$ \verb+\underset{below}{level}+ \qquad \underset{xx}{ABC} \;\; \mid \quad \und
 
 此命令可叠加嵌套使用，生成类似化学反应式的多重条件符号，
 如 `\overset{H_2}{\underset{1300℃}{\Longleftrightarrow}}`：
-$$ \rm{SrO+V^{''}_{Sr} \overset{H_2}{\underset{1300℃}{\Longleftrightarrow}} Sr^{\times}_{Sr}+2e^{'}+\frac 12O_2(g)} $$ 和 `\overset{Surface/bulk}{\underset{diffusion}{\longleftrightarrow}}`：
-$$ \rm{2OH^{\bullet}_{O(STN)}+2O^{\times}_{O(YSZ)} \; \overset{Surface/bulk}{\underset{diffusion}{\longleftrightarrow}} \;\; 2OH^{\bullet}_{O(YSZ)}+2O^{\times}_{O(STN)}} $$
+$$ \rm {SrO} + V^{''}_{Sr} \overset{H_2}{\underset{1300℃}{\Longleftrightarrow}} 2e^{'}+\frac 12O_2(g) + Sr^{\times}_S $$ 和 `\overset{Surface/bulk}{\underset{diffusion}{\longleftrightarrow}}`：
+$$\rm {SrO} + V^{''}_{Sr} \overset{H_2}{\underset{1300℃}{\Longleftrightarrow}} 2e^{'}+\frac 12O_2(g) + Sr^{\times}_S$$
+
 
 一般建议在书写化学方程式时声明 `\require{AMDcd}` 语句，使用 MathJax 内置的交换图表功能，具体例子可[参见下文](#1如何输入一个交换图表)。
 
@@ -851,7 +852,7 @@ $ \begin{Vmatrix} 1 & 2 \\ 3 & 4 \\ \end{Vmatrix} $
 |matrix|pmatrix|bmatrix|Bmatrix|vmatrix|Vmatrix|
 |:--:|:--:|:--:|:--:|:--:|:--:|
 |$ \begin{matrix} 1 & 2 \\ 3 & 4 \\ \end{matrix} $|$ \begin{pmatrix} 1 & 2 \\ 3 & 4 \\ \end{pmatrix} $|$ \begin{bmatrix} 1 & 2 \\ 3 & 4 \\ \end{bmatrix} $|$ \begin{Bmatrix} 1 & 2 \\ 3 & 4 \\ \end{Bmatrix} $|$ \begin{vmatrix} 1 & 2 \\ 3 & 4 \\ \end{vmatrix} $|$ \begin{Vmatrix} 1 & 2 \\ 3 & 4 \\ \end{Vmatrix} $|
-　　　　
+
 ### 3．如何输入带省略符号的矩阵
 
 使用 `\cdots` $\cdots$ , `\ddots` $\ddots$ , `\vdots` $\vdots$ 来输入省略符号。
@@ -1475,7 +1476,7 @@ Use `\,`, to insert a thin space before differentials; without this $\TeX$ will 
     \iiint_V f(x){\rm d}z {\rm d}y {\rm d}x & \iiint_{\boldsymbol{V}} f(x)\,{\rm d}z\,{\rm d}y\,{\rm d}x \\
 \end{array}
 
----
+
 
 感谢您花费时间阅读这份指导手册，本手册内容可能有疏漏之处，欢迎更改指正。
 更多语法请参见：[Cmd Markdown 简明语法手册](https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown)，[Cmd Markdown 高阶语法手册](https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#cmd-markdown-高阶语法手册)。
