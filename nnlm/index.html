@@ -1,0 +1,287 @@
+<!doctype html><html lang=zh-cn>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<title class=pjax-title>01-NNLM(’A Neural Probabilistic Language Model‘) - kevinzhang'blog</title><meta name=Description content="Begio经典论文’A Neural Probabilistic Language Model‘"><meta property="og:title" content="01-NNLM(’A Neural Probabilistic Language Model‘) ">
+<meta property="og:description" content="Begio经典论文’A Neural Probabilistic Language Model‘">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kevinzhangcode.github.io/nnlm/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2022-03-01T19:10:37+08:00">
+<meta property="article:modified_time" content="2022-03-01T19:10:37+08:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="01-NNLM(’A Neural Probabilistic Language Model‘) ">
+<meta name=twitter:description content="Begio经典论文’A Neural Probabilistic Language Model‘">
+<meta name=application-name content="kevinzhang'blog">
+<meta name=apple-mobile-web-app-title content="kevinzhang'blog">
+<meta name=theme-color content="#f8f8f8"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=canonical href=https://kevinzhangcode.github.io/nnlm/><link rel=prev href=https://kevinzhangcode.github.io/numpyguidebook/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/lib/fontawesome-free/all.min.css>
+<noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/lib/animate/animate.min.css>
+<noscript><link rel=stylesheet href=/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"01-NNLM(’A Neural Probabilistic Language Model‘) ","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/kevinzhangcode.github.io\/nnlm\/"},"genre":"posts","keywords":"Model, NLP, 经典论文研读系列","wordcount":1389,"url":"https:\/\/kevinzhangcode.github.io\/nnlm\/","datePublished":"2022-03-01T19:10:37+08:00","dateModified":"2022-03-01T19:10:37+08:00","publisher":{"@type":"Organization","name":"youguan"},"author":{"@type":"Person","name":"youguan"},"description":"Begio经典论文’A Neural Probabilistic Language Model‘"}</script></head><body header-desktop header-mobile><script type=text/javascript>function setTheme(e){document.body.setAttribute("theme",e)}function saveTheme(e){window.localStorage&&localStorage.setItem("theme",e)}function getMeta(t){const e=document.getElementsByTagName("meta");for(let n=0;n<e.length;n++)if(e[n].getAttribute("name")===t)return e[n];return''}if(window.localStorage&&localStorage.getItem("theme")){let e=localStorage.getItem("theme");e==="light"||e==="dark"||e==="black"?setTheme(e):window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?setTheme("dark"):setTheme("light")}else''==="light"||''==="dark"||''==="black"?(setTheme(''),saveTheme('')):(saveTheme("auto"),window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?setTheme("dark"):setTheme("light"));let metaColors={light:"#f8f8f8",dark:"#252627",black:"#000000"};getMeta("theme-color").content=metaColors[document.body.getAttribute("theme")]</script>
+<div id=back-to-top></div><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/ title="kevinzhang'blog">kevinzhang'blog</a>
+</div><div class=menu>
+<div class=menu-inner><a class=menu-item href=/posts/> 文章 </a><a class=menu-item href=/tags/> 标签 </a><a class=menu-item href=/categories/> 分类 </a><a class=menu-item href=/about/> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-desktop title=搜索>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-desktop title=清空>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=# onclick=return!1 class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i>
+</a></div></div></div></header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/ title="kevinzhang'blog">kevinzhang'blog</a>
+</div><div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div></div><div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-mobile title=搜索>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-mobile title=清空>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div><a href=# onclick=return!1 class=search-cancel id=search-cancel-mobile>
+取消
+</a>
+</div><a class=menu-item href=/posts/ title>文章</a><a class=menu-item href=/tags/ title>标签</a><a class=menu-item href=/categories/ title>分类</a><a class=menu-item href=/about/ title>关于</a><a href=# onclick=return!1 class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i>
+</a></div></div></header><div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div></div><main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>目录</h2><div class="toc-content always-active" id=toc-content-auto></div></div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle","normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">01-NNLM(’A Neural Probabilistic Language Model‘) </h1><div class=post-meta>
+<div class=post-meta-line>
+<span class=post-author><i class="author fas fa-user-circle fa-fw"></i><a href=kevinzhangcode.github.io title=Author rel=author class=author>youguan</a>
+</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/categories/documentation/><i class="far fa-folder fa-fw"></i>documentation</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2022-03-01>2022-03-01</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2022-03-01>2022-03-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1389 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div></div><div class=featured-image><img class=lazyload data-src="https://images.pexels.com/photos/2441454/pexels-photo-2441454.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260" data-srcset="https://images.pexels.com/photos/2441454/pexels-photo-2441454.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260, https://images.pexels.com/photos/2441454/pexels-photo-2441454.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260 1.5x, https://images.pexels.com/photos/2441454/pexels-photo-2441454.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260 2x" data-sizes=auto alt="https://images.pexels.com/photos/2441454/pexels-photo-2441454.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260" title="Begio经典论文’A Neural Probabilistic Language Model‘" height=auto width=auto></div><div class="details toc" id=toc-static kept>
+<div class="details-summary toc-title">
+<span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li><a href=#a-neural-probabilistic-language-model>A Neural Probabilistic Language Model</a>
+<ul>
+<li><a href=#观点>观点</a></li><li><a href=#模型>模型</a></li></ul></li><li><a href=#代码>代码</a></li><li><a href=#参考>参考</a></li></ul></nav></div></div><div class=content id=content><h2 id=a-neural-probabilistic-language-model>A Neural Probabilistic Language Model</h2><p>这篇论文是预训练语言模型的开山之作，<a href=https://yoshuabengio.org/ target=_blank rel="noopener noreffer">Yoshua Bengio</a>等于2003年提出的方法。</p><h3 id=观点>观点</h3><ul>
+<li>
+<p>将词汇表$V$中的每个单词${w_i}$关联到一个分布式单词特征向量$\mathcal{R}^m$。</p></li><li>
+<p>将句子的联合概率函数表示为句子序列中单词特征向量的组合。</p></li><li>
+<p>同时学习单词的特征向量和句子联合概率函数的参数。</p></li></ul><h3 id=模型>模型</h3><p>假设存在句子$w_1,\dots，w_i,\dots,w_n$，其中$w_n \in V$，$V$表示词汇集合，$w_i$表示单词，目标函数是学习$f(w_t,\dots,w_{t-n+1})=\hat{P}(w_t \vert w_1^{t-1})$的参数。</p><p>Bengio等人将模型分成两个部分：</p><ul>
+<li>
+<p>一个映射函数$C$，将 $V$中的第$i$个单词$w_i$映射成为一个 <code>特征向量</code> $C(w_i)\in \mathcal{R}^m$，它表示词汇表中与每个单词相关的分布特征向量。</p></li><li>
+<p>一个使用映射函数$C$表示的概率函数$g$，通过上下文中单词的特征向量的乘积组成联合概率模型，$g$的输出是一个向量，它的第$i$个元素估计了概率。
+$$
+f(i,w_{t-1},\dots,w_{t-n+1})=g(i,C(w_{t-1}),\dots,C(w_{t-n+1}))
+$$</p></li></ul><p>函数$f$是这两个映射($C$和$g$)的组合，上下文中的所有单词都共享$C$。与这两个部分的每个部分关联一些参数。</p><p>数学符号说明：</p><ul>
+<li>$C(i)$：单词$w$对应的词向量，其中$i$为词$w$在整个词汇表中的索引</li><li>$C$：词向量，大小为$\vert V \vert \times m$的矩阵</li><li>$\vert V \vert$：词汇表的大小，即预料库中去重后的单词个数</li><li>$m$：词向量的维度，一般大于50</li><li>$H$：隐藏层的 weight</li><li>$d$：隐藏层的 bias</li><li>$U$：输出层的 weight</li><li>$b$：输出层的 bias</li><li>$W$：输入层到输出层的 weight</li><li>$h$：隐藏层神经元个数</li></ul><img src=https://s3.bmp.ovh/imgs/2022/03/5c4e651036fc9162.png alt=模型结构 style=zoom:120%>
+<p>计算流程：</p><ul>
+<li>首先将输入的$n-1$个单词索引转为词向量，然后将这$n-1$个向量进行 concat，形成一个$(n-1)\times w$ 的矩阵，用$X$表示</li><li>将$X$送入隐藏层进行计算，$\textit{hidden}_\text{out}=\tanh{(d + X * H)}$</li><li>输出层共有$\vert V \vert$个节点，每个节点$y_i$表示预测下一个单词$i$的概率， $y$的计算公式为$y=b+X*W+\textit{hidden}_\text{out} * U$</li></ul><h2 id=代码>代码</h2><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># code by Tae Hwan Jung @graykode, modify by wmathor</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>torch</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>torch.nn</span> <span class=k>as</span> <span class=nn>nn</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>torch.optim</span> <span class=k>as</span> <span class=nn>optim</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>torch.utils.data</span> <span class=k>as</span> <span class=nn>Data</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>dtype</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>FloatTensor</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sentences</span> <span class=o>=</span> <span class=p>[</span> <span class=s2>&#34;i like dog&#34;</span><span class=p>,</span> <span class=s2>&#34;i love coffee&#34;</span><span class=p>,</span> <span class=s2>&#34;i hate milk&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>word_list</span> <span class=o>=</span> <span class=s2>&#34; &#34;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>sentences</span><span class=p>)</span><span class=o>.</span><span class=n>split</span><span class=p>()</span> <span class=c1># [&#39;i&#39;, &#39;like&#39;, &#39;dog&#39;, &#39;dog&#39;, &#39;i&#39;, &#39;love&#39;, &#39;coffee&#39;, &#39;i&#39;, &#39;hate&#39;, &#39;milk&#39;]</span>
+</span></span><span class=line><span class=cl><span class=n>word_list</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=nb>set</span><span class=p>(</span><span class=n>word_list</span><span class=p>))</span> <span class=c1># [&#39;i&#39;, &#39;like&#39;, &#39;dog&#39;, &#39;love&#39;, &#39;coffee&#39;, &#39;hate&#39;, &#39;milk&#39;]</span>
+</span></span><span class=line><span class=cl><span class=n>word_dict</span> <span class=o>=</span> <span class=p>{</span><span class=n>w</span><span class=p>:</span> <span class=n>i</span> <span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=n>w</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>word_list</span><span class=p>)}</span> <span class=c1># {&#39;i&#39;:0, &#39;like&#39;:1, &#39;dog&#39;:2, &#39;love&#39;:3, &#39;coffee&#39;:4, &#39;hate&#39;:5, &#39;milk&#39;:6}</span>
+</span></span><span class=line><span class=cl><span class=n>number_dict</span> <span class=o>=</span> <span class=p>{</span><span class=n>i</span><span class=p>:</span> <span class=n>w</span> <span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=n>w</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>word_list</span><span class=p>)}</span> <span class=c1># {0:&#39;i&#39;, 1:&#39;like&#39;, 2:&#39;dog&#39;, 3:&#39;love&#39;, 4:&#39;coffee&#39;, 5:&#39;hate&#39;, 6:&#39;milk&#39;}</span>
+</span></span><span class=line><span class=cl><span class=n>n_class</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>word_dict</span><span class=p>)</span> <span class=c1># number of Vocabulary, just like |V|, in this task n_class=7</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># NNLM(Neural Network Language Model) Parameter</span>
+</span></span><span class=line><span class=cl><span class=n>n_step</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>sentences</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>split</span><span class=p>())</span><span class=o>-</span><span class=mi>1</span> <span class=c1># n-1 in paper, look back n_step words and predict next word. In this task n_step=2</span>
+</span></span><span class=line><span class=cl><span class=n>n_hidden</span> <span class=o>=</span> <span class=mi>2</span> <span class=c1># h in paper</span>
+</span></span><span class=line><span class=cl><span class=n>m</span> <span class=o>=</span> <span class=mi>2</span> <span class=c1># m in paper, word embedding dim</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>make_batch</span><span class=p>(</span><span class=n>sentences</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>  <span class=n>input_batch</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl>  <span class=n>target_batch</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=k>for</span> <span class=n>sen</span> <span class=ow>in</span> <span class=n>sentences</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>word</span> <span class=o>=</span> <span class=n>sen</span><span class=o>.</span><span class=n>split</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=nb>input</span> <span class=o>=</span> <span class=p>[</span><span class=n>word_dict</span><span class=p>[</span><span class=n>n</span><span class=p>]</span> <span class=k>for</span> <span class=n>n</span> <span class=ow>in</span> <span class=n>word</span><span class=p>[:</span><span class=o>-</span><span class=mi>1</span><span class=p>]]</span> <span class=c1># [0, 1], [0, 3], [0, 5]</span>
+</span></span><span class=line><span class=cl>    <span class=n>target</span> <span class=o>=</span> <span class=n>word_dict</span><span class=p>[</span><span class=n>word</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]]</span> <span class=c1># 2, 4, 6</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>input_batch</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=nb>input</span><span class=p>)</span> <span class=c1># [[0, 1], [0, 3], [0, 5]]</span>
+</span></span><span class=line><span class=cl>    <span class=n>target_batch</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>target</span><span class=p>)</span> <span class=c1># [2, 4, 6]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>input_batch</span><span class=p>,</span> <span class=n>target_batch</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>input_batch</span><span class=p>,</span> <span class=n>target_batch</span> <span class=o>=</span> <span class=n>make_batch</span><span class=p>(</span><span class=n>sentences</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>input_batch</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>LongTensor</span><span class=p>(</span><span class=n>input_batch</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>target_batch</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>LongTensor</span><span class=p>(</span><span class=n>target_batch</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>dataset</span> <span class=o>=</span> <span class=n>Data</span><span class=o>.</span><span class=n>TensorDataset</span><span class=p>(</span><span class=n>input_batch</span><span class=p>,</span> <span class=n>target_batch</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>loader</span> <span class=o>=</span> <span class=n>Data</span><span class=o>.</span><span class=n>DataLoader</span><span class=p>(</span><span class=n>dataset</span><span class=o>=</span><span class=n>dataset</span><span class=p>,</span> <span class=n>batch_size</span><span class=o>=</span><span class=mi>16</span><span class=p>,</span> <span class=n>shuffle</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>NNLM</span><span class=p>(</span><span class=n>nn</span><span class=o>.</span><span class=n>Module</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>  <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=nb>super</span><span class=p>(</span><span class=n>NNLM</span><span class=p>,</span> <span class=bp>self</span><span class=p>)</span><span class=o>.</span><span class=fm>__init__</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=o>.</span><span class=n>C</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Embedding</span><span class=p>(</span><span class=n>n_class</span><span class=p>,</span> <span class=n>m</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=o>.</span><span class=n>H</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Parameter</span><span class=p>(</span><span class=n>torch</span><span class=o>.</span><span class=n>randn</span><span class=p>(</span><span class=n>n_step</span> <span class=o>*</span> <span class=n>m</span><span class=p>,</span> <span class=n>n_hidden</span><span class=p>)</span><span class=o>.</span><span class=n>type</span><span class=p>(</span><span class=n>dtype</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=o>.</span><span class=n>W</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Parameter</span><span class=p>(</span><span class=n>torch</span><span class=o>.</span><span class=n>randn</span><span class=p>(</span><span class=n>n_step</span> <span class=o>*</span> <span class=n>m</span><span class=p>,</span> <span class=n>n_class</span><span class=p>)</span><span class=o>.</span><span class=n>type</span><span class=p>(</span><span class=n>dtype</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=o>.</span><span class=n>d</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Parameter</span><span class=p>(</span><span class=n>torch</span><span class=o>.</span><span class=n>randn</span><span class=p>(</span><span class=n>n_hidden</span><span class=p>)</span><span class=o>.</span><span class=n>type</span><span class=p>(</span><span class=n>dtype</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=o>.</span><span class=n>U</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Parameter</span><span class=p>(</span><span class=n>torch</span><span class=o>.</span><span class=n>randn</span><span class=p>(</span><span class=n>n_hidden</span><span class=p>,</span> <span class=n>n_class</span><span class=p>)</span><span class=o>.</span><span class=n>type</span><span class=p>(</span><span class=n>dtype</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=o>.</span><span class=n>b</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>Parameter</span><span class=p>(</span><span class=n>torch</span><span class=o>.</span><span class=n>randn</span><span class=p>(</span><span class=n>n_class</span><span class=p>)</span><span class=o>.</span><span class=n>type</span><span class=p>(</span><span class=n>dtype</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=k>def</span> <span class=nf>forward</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>X</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s1>&#39;&#39;&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>    X: [batch_size, n_step]
+</span></span></span><span class=line><span class=cl><span class=s1>    &#39;&#39;&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=n>X</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>C</span><span class=p>(</span><span class=n>X</span><span class=p>)</span> <span class=c1># [batch_size, n_step] =&gt; [batch_size, n_step, m]</span>
+</span></span><span class=line><span class=cl>    <span class=n>X</span> <span class=o>=</span> <span class=n>X</span><span class=o>.</span><span class=n>view</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=n>n_step</span> <span class=o>*</span> <span class=n>m</span><span class=p>)</span> <span class=c1># [batch_size, n_step * m]</span>
+</span></span><span class=line><span class=cl>    <span class=n>hidden_out</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>tanh</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>d</span> <span class=o>+</span> <span class=n>torch</span><span class=o>.</span><span class=n>mm</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>H</span><span class=p>))</span> <span class=c1># [batch_size, n_hidden]</span>
+</span></span><span class=line><span class=cl>    <span class=n>output</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>b</span> <span class=o>+</span> <span class=n>torch</span><span class=o>.</span><span class=n>mm</span><span class=p>(</span><span class=n>X</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>W</span><span class=p>)</span> <span class=o>+</span> <span class=n>torch</span><span class=o>.</span><span class=n>mm</span><span class=p>(</span><span class=n>hidden_out</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>U</span><span class=p>)</span> <span class=c1># [batch_size, n_class]</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>output</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>model</span> <span class=o>=</span> <span class=n>NNLM</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>criterion</span> <span class=o>=</span> <span class=n>nn</span><span class=o>.</span><span class=n>CrossEntropyLoss</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>optimizer</span> <span class=o>=</span> <span class=n>optim</span><span class=o>.</span><span class=n>Adam</span><span class=p>(</span><span class=n>model</span><span class=o>.</span><span class=n>parameters</span><span class=p>(),</span> <span class=n>lr</span><span class=o>=</span><span class=mf>1e-3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Training</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>epoch</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>5000</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>  <span class=k>for</span> <span class=n>batch_x</span><span class=p>,</span> <span class=n>batch_y</span> <span class=ow>in</span> <span class=n>loader</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>optimizer</span><span class=o>.</span><span class=n>zero_grad</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>output</span> <span class=o>=</span> <span class=n>model</span><span class=p>(</span><span class=n>batch_x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># output : [batch_size, n_class], batch_y : [batch_size] (LongTensor, not one-hot)</span>
+</span></span><span class=line><span class=cl>    <span class=n>loss</span> <span class=o>=</span> <span class=n>criterion</span><span class=p>(</span><span class=n>output</span><span class=p>,</span> <span class=n>batch_y</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>epoch</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span><span class=o>%</span><span class=mi>1000</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Epoch:&#39;</span><span class=p>,</span> <span class=s1>&#39;</span><span class=si>%04d</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=p>(</span><span class=n>epoch</span> <span class=o>+</span> <span class=mi>1</span><span class=p>),</span> <span class=s1>&#39;cost =&#39;</span><span class=p>,</span> <span class=s1>&#39;</span><span class=si>{:.6f}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>loss</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>loss</span><span class=o>.</span><span class=n>backward</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>optimizer</span><span class=o>.</span><span class=n>step</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Predict</span>
+</span></span><span class=line><span class=cl><span class=n>predict</span> <span class=o>=</span> <span class=n>model</span><span class=p>(</span><span class=n>input_batch</span><span class=p>)</span><span class=o>.</span><span class=n>data</span><span class=o>.</span><span class=n>max</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>keepdim</span><span class=o>=</span><span class=kc>True</span><span class=p>)[</span><span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Test</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>([</span><span class=n>sen</span><span class=o>.</span><span class=n>split</span><span class=p>()[:</span><span class=n>n_step</span><span class=p>]</span> <span class=k>for</span> <span class=n>sen</span> <span class=ow>in</span> <span class=n>sentences</span><span class=p>],</span> <span class=s1>&#39;-&gt;&#39;</span><span class=p>,</span> <span class=p>[</span><span class=n>number_dict</span><span class=p>[</span><span class=n>n</span><span class=o>.</span><span class=n>item</span><span class=p>()]</span> <span class=k>for</span> <span class=n>n</span> <span class=ow>in</span> <span class=n>predict</span><span class=o>.</span><span class=n>squeeze</span><span class=p>()])</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=参考>参考</h2><p><a href=https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf target=_blank rel="noopener noreffer">A Neural Probabilistic Language Model</a></p><p><a href=https://wmathor.com/index.php/archives/1442/ target=_blank rel="noopener noreffer">NNLM 的 PyTorch 实现</a></p><p><a href=https://github.com/graykode/nlp-tutorial/blob/master/1-1.NNLM/NNLM.py target=_blank rel="noopener noreffer">nlp-tutorial</a></p></div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>更新于 2022-03-01</span>
+</div><div class=post-info-license></div></div><div class=post-info-line>
+<div class=post-info-md></div><div class=post-info-share>
+<span><a href=# onclick=return!1 title="分享到 Twitter" data-sharer=twitter data-url=https://kevinzhangcode.github.io/nnlm/ data-title="01-NNLM(’A Neural Probabilistic Language Model‘) " data-hashtags=Model,NLP,经典论文研读系列><i class="fab fa-twitter fa-fw"></i></a><a href=# onclick=return!1 title="分享到 Facebook" data-sharer=facebook data-url=https://kevinzhangcode.github.io/nnlm/ data-hashtag=Model><i class="fab fa-facebook-square fa-fw"></i></a><a href=# onclick=return!1 title="分享到 WhatsApp" data-sharer=whatsapp data-url=https://kevinzhangcode.github.io/nnlm/ data-title="01-NNLM(’A Neural Probabilistic Language Model‘) " data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href=# onclick=return!1 title="分享到 Line" data-sharer=line data-url=https://kevinzhangcode.github.io/nnlm/ data-title="01-NNLM(’A Neural Probabilistic Language Model‘) "><i data-svg-src=/lib/simple-icons/icons/line.min.svg></i></a><a href=# onclick=return!1 title="分享到 微博" data-sharer=weibo data-url=https://kevinzhangcode.github.io/nnlm/ data-title="01-NNLM(’A Neural Probabilistic Language Model‘) " data-image="https://images.pexels.com/photos/2441454/pexels-photo-2441454.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"><i class="fab fa-weibo fa-fw"></i></a><a href=# onclick=return!1 title="分享到 Myspace" data-sharer=myspace data-url=https://kevinzhangcode.github.io/nnlm/ data-title="01-NNLM(’A Neural Probabilistic Language Model‘) " data-description="Begio经典论文’A Neural Probabilistic Language Model‘"><i data-svg-src=/lib/simple-icons/icons/myspace.min.svg></i></a><a href=# onclick=return!1 title="分享到 Blogger" data-sharer=blogger data-url=https://kevinzhangcode.github.io/nnlm/ data-title="01-NNLM(’A Neural Probabilistic Language Model‘) " data-description="Begio经典论文’A Neural Probabilistic Language Model‘"><i class="fab fa-blogger fa-fw"></i></a><a href=# onclick=return!1 title="分享到 Evernote" data-sharer=evernote data-url=https://kevinzhangcode.github.io/nnlm/ data-title="01-NNLM(’A Neural Probabilistic Language Model‘) "><i class="fab fa-evernote fa-fw"></i></a></span>
+</div></div></div><div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/model/>Model</a>,&nbsp;<a href=/tags/nlp/>NLP</a>,&nbsp;<a href=/tags/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%A0%94%E8%AF%BB%E7%B3%BB%E5%88%97/>经典论文研读系列</a></section><section>
+<span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span>
+</section></div><div class=post-nav><a href=/numpyguidebook/ class=prev rel=prev title=NumpyGuidebook><i class="fas fa-angle-left fa-fw"></i>NumpyGuidebook</a></div></div></article></div></main><footer class=footer>
+<div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.93.0">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreffer" title="DoIt 0.2.13"><i class="far fa-edit fa-fw"></i> DoIt</a>
+</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=kevinzhangcode.github.io target=_blank rel="noopener noreferrer">youguan</a></span></div></div></footer></div><div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部>
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论>
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><div class=assets><script type=text/javascript src=/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/lib/lunr/lunr.min.js></script><script type=text/javascript src=/lib/lunr/lunr.stemmer.support.min.js></script><script type=text/javascript src=/lib/lunr/lunr.zh.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/topbar/topbar.min.js></script><script type=text/javascript src=/lib/pjax/pjax.min.js></script><script type=text/javascript src=/js/theme.min.js></script></div><div class=pjax-assets><script type=text/javascript src=/lib/lightgallery/lightgallery.min.js></script><script type=text/javascript src=/lib/lightgallery/lg-thumbnail.min.js></script><script type=text/javascript src=/lib/lightgallery/lg-zoom.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js></script><script type=text/javascript src=/lib/katex/auto-render.min.js></script><script type=text/javascript src=/lib/katex/copy-tex.min.js></script><script type=text/javascript src=/lib/katex/mhchem.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:1e3},comment:{},lightGallery:{actualSize:!1,exThumbImage:"data-thumbnail",hideBarsDelay:2e3,selector:".lightgallery",speed:400,thumbContHeight:80,thumbWidth:80,thumbnail:!0},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!1,left:"$",right:"$"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",lunrLanguageCode:"zh",lunrSegmentitURL:"/lib/lunr/lunr.segmentit.js",maxResultLength:10,noResultsFound:"没有找到结果",snippetLength:50,type:"lunr"},sharerjs:!0}</script><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/lib/lightgallery/lightgallery.min.css>
+<noscript><link rel=stylesheet href=/lib/lightgallery/lightgallery.min.css></noscript><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/lib/katex/katex.min.css>
+<noscript><link rel=stylesheet href=/lib/katex/katex.min.css></noscript><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/lib/katex/copy-tex.min.css>
+<noscript><link rel=stylesheet href=/lib/katex/copy-tex.min.css></noscript></div></body></html>
