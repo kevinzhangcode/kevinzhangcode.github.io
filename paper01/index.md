@@ -67,13 +67,14 @@ $$
 
 
 $$
-\begin{equation}
-\begin{split}\textbf{x} &=\textbf{r}_1' \dots \textbf{n}_1'\\\\
-   &=e+f
-\end{split}
-\end{equation}
+\begin{align}
+\textbf{x} &=\textbf{r}_1' \dots \textbf{n}_1'\\\\
+   &=\textbf{PGN} \circ \textbf{Adapter} \circ \textbf{BERT}(x,a)\\\\
+   &=\textbf{Adapter} \circ \textbf{BERT}(x,\textbf{V}=\mathbf{\Theta} \times \textbf{e}^a)
+\end{align}
 $$
 
+其中$\mathbf{\Theta} \in \mathcal{R}^{\vert \textbf{V} \vert \times\textbf{e}^a}$，$\textbf{x} =\textbf{r}_1' \dots \textbf{n}_1'$是注释者$a$对$x=w_1 \dots w_n$的`annotator-aware`的表示，$\textbf{e}^a$是annotator的embedding。
 
 #### BiLSTM编码层（BiLSTM Encoding）
 
