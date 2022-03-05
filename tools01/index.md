@@ -11,7 +11,7 @@
 1. 数据选择 (Data Selection)
 2. 词汇量增加 (Vocabulary Augmentation)
 
-接下来，将演示这样一个`Domain Adaptation`的Transformer模型是如何与🤗`transformer`的培训界面兼容的，以及它如何优于开箱即用的(无领域适应的)模型。这些技术应用于BERT-small，但是代码库被编写成可推广到[HuggingFace](https://huggingface.co/)支持的其他Transformer类。
+接下来，我们将演示这样一个`Domain Adaptation`的Transformer模型是如何与🤗`transformer`的训练流程兼容的，以及它如何优于开箱即用的(无`Domain Adaptation`的)模型,这些技术应用于BERT-small，但是代码库被编写成可推广到[HuggingFace](https://huggingface.co/)支持的其他Transformer类。
 
 #### 警告
 
@@ -36,6 +36,7 @@ pip install transformers-domain-adaptation -i https://pypi.tuna.tsinghua.edu.cn/
 ```shell
 wget http://georgian-toolkit.s3.amazonaws.com/transformers-domain-adaptation/colab/files.zip
 
+# 解压文件
 unzip ./files.zip
 ```
 
