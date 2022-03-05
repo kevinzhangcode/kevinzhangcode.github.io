@@ -69,9 +69,46 @@ $$
 $\alpha，\beta$是温度标度；$\epsilon$是应用于相似性矩阵的偏移量；$\mathcal{P}_i,\mathcal{N}_i$是第$i$个锚的正负样本的指数。
 
 
+
+
+
+### 实验结果与讨论
+
+<div>			<!--块级封装-->
+    <center>	<!--将图片和文字居中-->
+    <img src="https://i.bmp.ovh/imgs/2022/03/fc6ef9fe8d4cc976.png"
+         alt="无法显示图片"
+         style="zoom:130%"/>
+    <br>		<!--换行-->
+    Fig-1.Multilingual UMLS Knowledge Always Helps	<!--标题-->
+    </center>
+</div>
+
+Fig-1总结了在各种单语、多语和领域内预训练编码器上应用基于UMLS知识的多语言SAP微调的结果；注入UMLS知识对模型在XL-BEL上的表现在所有语言和所有基础编码器上都是有益的。使用多语言UMLS同义词对生物医学$\texttt{PUBMEDBERT}$（$SapBERT_{all\_syn}$）进行SAP-fine-tune，而不是只使用英语同义词（$SapBERT$），能全面提高其性能。对每种语言的单语BERT进行SAP-ing调整，也在所有语言中产生了巨大的收益；唯一的例外是泰语（TH），它在UMLS中没有体现。对多语言模型MBERT和XLMR进行微调，会带来更大的相对收益。
+
+UMLS数据在很大程度上偏向于罗曼语和日耳曼语。因此，对于与这些语系比较相似的语言，单语LM（上半部分，Fig-1）与多语LM（下半部分，Fig-1）相比表现相当或优于多语LM。然而，对于其他（遥远的）语言（如KO、ZH、JA、TH），情况则相反。例如，在TH上，XLMR+SAPall_syn比THBERT+SAPall_syn高出20%@1的精确度。
+
+
+
+<div>			<!--块级封装-->
+    <center>	<!--将图片和文字居中-->
+    <img src="https://i.bmp.ovh/imgs/2022/03/2b08831a4c6feee0.png"
+         alt="无法显示图片"
+         style="zoom:130%"/>
+    <br>		<!--换行-->
+    Fig-2.General Translation Knowledge is Useful	<!--标题-->
+    </center>
+</div>
+
+Fig-2总结了我们在一般翻译数据上继续训练的结果。 在之前基于UMLS的SAP之后 通过这个变体，基础多语言LM成为强大的多语言生物医学专家。我们观察到域外翻译数据的额外强大提升：例如，对于MBERT，除ES外，所有语言的提升范围为2.4%至12.7%。对于XLMR，我们报告了$XLMR+SAPen_{syn}$在RU、TR、KO、TH上的精确度@1提升，以及$XLMR+SAPall_{syn}$的类似但较小的提升。
+
+### 结论
+
+我们引入了一个新的跨语言生物医学实体任务（XL-BEL），为生物医学领域的跨语言实体表示建立了一个覆盖面广且可靠的评估基准，并在XL-BEL上评估了当前的SotA生物医学实体表示。我们还提出了一个有效的迁移学习方案，利用一般领域的翻译来提高领域专业表示模型的跨语言能力。我们希望我们的工作能够激励未来更多关于多语言和领域专业表示学习的研究。
+
 ### 代码
 
-待更新
+https://github.com/cambridgeltl/sapbert
 
 
 
