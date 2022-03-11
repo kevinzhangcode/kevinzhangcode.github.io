@@ -19,10 +19,6 @@ Cross-Domain NER using Cross-Domain Language Modeling [[ACL 2019\]](https://www.
 
 
 
-### 贡献
-
-
-
 ### 模型
 
 模型的整体结构如图Fig-1所示。底部展示了两个领域和两个任务的组合。首先给定一个输入句子，通过一个共享的嵌入层计算单词表征，然后通过一个新的参数生成网络计算出一组特定任务和领域的BiLSTM参数，用于编码输入序列，最后不同的输出层被用于不同的任务和领域。
@@ -147,9 +143,9 @@ $$
 
 其中
 
-- $\\\# x$代表目标词$x$的词汇索引
+- ${\\#}x$代表目标词$x$的词汇索引
 
-- $\mathbf{w}_{\\\#x}$和$b_{\\\#x}$分别为目标词向量和目标词bias
+- $\boldsymbol{w_{\\# x}}$和$b_{\\#x}$分别为目标词向量和目标词bias
 
 - $Z$是归一化项目，计算公式为:
 
@@ -157,9 +153,28 @@ $$
 
   其中$\mathcal{N}_x$代表目标词$x$的nagative样本集，该集的每个元素都是1到跨域词汇量的随机数，$\bar{\mathbf{h}}i$分别代表LMf中的$\overrightarrow{\mathbf{h}}_i$和LMb中的$\overleftarrow{\mathbf{h}}_i$。
 
+  
+
+#### Multi-Task Learning Algorithm
+
+我们为多任务学习提出了一种跨任务和跨领域的联合训练方法，算法1提供了训练程序。在每轮训练中（第1行至第18行），Fig-1中4个任务按照mini-batches轮流训练（分别为第4-5、7-8、11-12和15-16行）
+
+- 每个任务首先使用$\boldsymbol{W}$和他们的表示$\boldsymbol{I_d^D}$、$\boldsymbol{I_t^T}$生成参数$\theta_{\text{LSTM}}^{d,t}$
+- 然后计算$f(\boldsymbol{W},\boldsymbol{I_d^D},\boldsymbol{I_t^T})$的梯度，以及特定领域的输出层$(\theta_{crfs},\theta_{crft},\theta_{nss})$
+
+<img src="https://i.bmp.ovh/imgs/2022/03/b843dcf41fdf74eb.png" style="zoom: 50%;" />
+
 ### 实验结果与讨论
 
-待补充
+作者在三个跨领域数据集上进行了实验，在有监督的领域适应和无监督的领域适应设置下，将提出的方法与一系列转移学习基线进行比较。
+
+
+
+<img src="https://i.bmp.ovh/imgs/2022/03/de890530165b5d27.png" style="zoom:50%;" />
+
+
+
+<img src="https://i.bmp.ovh/imgs/2022/03/24ed2cc5588a8f10.png" style="zoom: 50%;" />
 
 
 
