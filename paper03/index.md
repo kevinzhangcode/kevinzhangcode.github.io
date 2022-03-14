@@ -38,7 +38,6 @@ Cross-Domain NER using Cross-Domain Language Modeling [[ACL 2019\]](https://www.
 按照Yang等人（2018）的说法,给定一个输入$\mathbf{x}=[x_1,x_2,\cdots,x_n]$，来自以下4个数据集
 
 - 源域NER训练集$S_{ner}=\\{\\{x_i,y_i\\}\\}_{i=1}^m$
-
 - 目标域NER训练集$T_{ner}=\\{\\{x_i,y_i\\}\\}_{i=1}^n$
 - 源域原始文本集$S_{lm}=\\{\\{x_i\\}\\}_{i=1}^p$
 - 目标域原始文本集$T_{lm}=\\{\\{x_i\\}\\}_{i=1}^p$
@@ -75,7 +74,14 @@ $$
 
 给定输入$v$和参数$\theta$，一个任务和特定领域$\text{BiLSTM}$单元的隐藏输出可以统一写成:
 
- <img src="https://i.bmp.ovh/imgs/2022/03/2f1c264d513dcacc.png" style="zoom:50%;" />
+ {{<math>}}
+
+$$\begin{aligned}
+\overrightarrow{\mathbf{h}}_i^{d,t}=\text{LSTM}(\overrightarrow{\mathbf{h}}_{i-1}^{d,t},\mathbf{v}_i,\overrightarrow{\theta}_{\text{LSTM}}^{d,t})\\
+\overleftarrow{\mathbf{h}}_{i}^{d,t}=\text{LSTM}({\overleftarrow{\mathbf{h}}}_{i-1}^{d,t},\mathbf{v}_i,\overleftarrow{\theta}_{\text{LSTM}}^{d,t})
+\end{aligned}$$
+
+{{</math>}}
 
 ```tex
 \begin{aligned}
@@ -92,9 +98,11 @@ $\overrightarrow{\mathbf{h}}_i^{d,t}$，$\overleftarrow{\mathbf{h}}_i^{d,t}$分�
 
 标准CRFs被用作NER的输出层，在输入句子$\mathbf{x}$上产生的标签序列$\mathbf{y}=l_1,l_2,\dots,l_i$的输出概率$p(\mathbf{y}\vert \mathbf{x})$是
 
-
-
-<img src="https://i.bmp.ovh/imgs/2022/03/e2126ea6072d8faa.png" style="zoom:50%;" />
+{{<math>}}
+$$
+p(\boldsymbol{y} \mid \boldsymbol{x})=\frac{\exp \left\{\sum_{i}\left(\mathbf{w}_{\mathrm{CRF}}^{l_{i}} \cdot \mathbf{h}_{i}+b_{\mathrm{CRF}}^{\left(l_{i-1}, l_{i}\right)}\right)\right\}}{\sum_{\boldsymbol{y}^{\prime}} \exp \left\{\sum_{i}\left(\mathbf{w}_{i}^{l_{\mathrm{CRF}}^{\prime}} \cdot \mathbf{h}_{i}+b_{\mathrm{CRF}}^{\left(l_{i-1}^{\prime}, l_{i}^{\prime}\right)}\right)\right\}}
+$$
+{{</math>}}
 
 ```tex
 $$
@@ -143,13 +151,13 @@ $$
 
 其中
 
-- ${\\#}x$代表目标词$x$的词汇索引
+- {{<math>}}${\#}x${{</math>}}代表目标词$x$的词汇索引
 
-- $\boldsymbol{w_{\\# x}}$和$b_{\\#x}$分别为目标词向量和目标词bias
+- {{<math>}}$\boldsymbol{w_{\# x}}${{</math>}}和{{<math>}}$b_{\#x}${{</math>}}分别为目标词向量和目标词bias
 
 - $Z$是归一化项目，计算公式为:
 
-  <img src="https://i.bmp.ovh/imgs/2022/03/780747805e0cf3d3.png" style="zoom:50%;" />
+  {{<math>}}$Z=\sum_{k \in\left\{\# x \cup \mathcal{N}_{x}\right\}} \exp \left\{\mathbf{w}_{k}^{\top} \overline{\mathbf{h}}_{i}+b_{k}\right\}${{</math>}}
 
   其中$\mathcal{N}_x$代表目标词$x$的nagative样本集，该集的每个元素都是1到跨域词汇量的随机数，$\bar{\mathbf{h}}i$分别代表LMf中的$\overrightarrow{\mathbf{h}}_i$和LMb中的$\overleftarrow{\mathbf{h}}_i$。
 
